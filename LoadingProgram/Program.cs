@@ -25,15 +25,37 @@ namespace LoadingProgram
             int m = -1, n = 2;
             for (int i = 0; i < sh.GetLength(0); i++)
             {
-                if (sh[i, n] > shipDispl/1.025)
+                if (sh[i, n] > shipDispl / 1.025)
                 {
                     m = i - 1;
                     break;
                 }
             }
-            Console.WriteLine($"D1 = {sh[m,n]}\tD2 = {sh[(m+1),n]}");
+            // Console.WriteLine($"D1 = {sh[m, n]}\tD2 = {sh[(m + 1), n]}");
             double draughtWL = sh[m, 0] + (shipDispl - sh[m, n]) * (sh[(m + 1), 0] - sh[m, 0]) / (sh[(m + 1), n] - sh[m, n]);
             Console.WriteLine($"Draught at center of WL = {draughtWL}");
+
+            FindDrfatCWL(shipDispl);
+
+            Console.ReadLine(ShipData.HydrostaticsTrim0).Split(';');
+
+
+        }
+
+        private static double FindDrfatCWL(double shipDispl)
+        {
+            int m = -1, n = 2;
+            for (int i = 0; i < sh.GetLength(0); i++)
+            {
+                if (sh[i, n] > shipDispl / 1.025)
+                {
+                    m = i - 1;
+                    break;
+                }
+            }
+            double draughtWL = sh[m, 0] + (shipDispl - sh[m, n]) * (sh[(m + 1), 0] - sh[m, 0]) / (sh[(m + 1), n] - sh[m, n]);
+            Console.WriteLine($"Draught at center of WL = {draughtWL}");
+            return draughtWL;
         }
     }
 }
