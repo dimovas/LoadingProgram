@@ -35,27 +35,48 @@ namespace LoadingProgram
             double draughtWL = sh[m, 0] + (shipDispl - sh[m, n]) * (sh[(m + 1), 0] - sh[m, 0]) / (sh[(m + 1), n] - sh[m, n]);
             Console.WriteLine($"Draught at center of WL = {draughtWL}");
 
-            FindDrfatCWL(shipDispl);
-
-            Console.ReadLine(ShipData.HydrostaticsTrim0).Split(';');
+            //FindDrfatCWL(shipDispl);
+            Console.WriteLine("Input file adress");
+            string filename = Console.ReadLine();
+            LoadCSV(filename);
 
 
         }
 
-        private static double FindDrfatCWL(double shipDispl)
+        private static double[,] LoadCSV(string filename)
         {
-            int m = -1, n = 2;
-            for (int i = 0; i < sh.GetLength(0); i++)
+            //Console.ReadLine(ShipData.HydrostaticsTrim0).Split(';');
+            string[] dataFile = System.IO.File.ReadAllLines(filename);
+            int r = dataFile.Length;
+            int c = dataFile[0].Split(';').Length;
+            double[,] values = new double[r, c];
+            for (int i = 0; i < r; i++)
             {
-                if (sh[i, n] > shipDispl / 1.025)
-                {
-                    m = i - 1;
-                    break;
-                }
+                double[] dataFileRow = dataFile[i].Split(';');
+                for (int j = 0; j < c; j++)
+                    values[i, j] = dataFileRow[j];
             }
-            double draughtWL = sh[m, 0] + (shipDispl - sh[m, n]) * (sh[(m + 1), 0] - sh[m, 0]) / (sh[(m + 1), n] - sh[m, n]);
-            Console.WriteLine($"Draught at center of WL = {draughtWL}");
-            return draughtWL;
+
+
+
+            return values;
         }
+
+        /* private static double FindDrfatCWL(double shipDispl)
+         {
+             int m = -1, n = 2;
+             for (int i = 0; i < sh.GetLength(0); i++)
+             {
+                 if (sh[i, n] > shipDispl / 1.025)
+                 {
+                     m = i - 1;
+                     break;
+                 }
+             }
+             double draughtWL = sh[m, 0] + (shipDispl - sh[m, n]) * (sh[(m + 1), 0] - sh[m, 0]) / (sh[(m + 1), n] - sh[m, n]);
+             Console.WriteLine($"Draught at center of WL = {draughtWL}");
+             return draughtWL;
+         }
+         */
     }
 }
